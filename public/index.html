@@ -1,0 +1,1010 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabSphere</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <style>/* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        main {
+            padding: 20px;
+        }
+        
+        h2 {
+            margin-top: 0;
+        }
+        
+        form {
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #555;
+        }
+        
+        section {
+            margin-bottom: 20px;
+        }
+
+        header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+}
+        </style>
+    <header>
+        <h1>Welcome to CollabSphere</h1>
+    </header>
+
+    <main>
+        <section id="landing-section">
+            <h2>Welcome to CollabSphere!</h2>
+            <p>Discover collaboration opportunities with brands and creators.</p>
+            <button id="login-btn">Login</button>
+            <button id="register-btn">Register</button>
+        </section>
+
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+
+        <section id="register-section">
+            <h2>Register</h2>
+            <form id="register-form">
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </section>
+
+        <section id="brand-dashboard">
+            // Brand dashboard elements will be dynamically added here 
+        </section>
+
+        <section id="brand-posts">
+            //Brand posts will be dynamically added here 
+        </section>
+
+        <section id="post-creation">
+            <h2>Create Post</h2>
+            <form id="post-form">
+                <input type="text" id="post-title" placeholder="Title" required>
+                <textarea id="post-content" placeholder="Content" required></textarea>
+                <input type="file" id="post-photo" accept="image/*">
+                <button type="submit">Create Post</button>
+            </form>
+        </section>
+    </main>
+
+    <script>document.addEventListener('DOMContentLoaded', () => {
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const brandDashboardSection = document.getElementById('brand-dashboard');
+        const brandPostsSection = document.getElementById('brand-posts');
+        const postForm = document.getElementById('post-form');
+        const landingSection = document.getElementById('landing-section');
+        const loginSection = document.getElementById('login-section');
+        const registerSection = document.getElementById('register-section');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const createPostContainer = document.getElementById('post-creation');
+    
+        loginSection.style.display = 'none';
+        registerSection.style.display = 'none';
+        brandPostsSection.style.display = 'none';
+        createPostContainer.style.display = 'none';
+                // Event listener for clicking on login button
+        loginBtn.addEventListener('click', () => {
+            landingSection.style.display = 'none';
+            registerSection.style.display = 'none';
+            loginSection.style.display = 'block';
+        });
+        
+        // Event listener for clicking on register button
+        registerBtn.addEventListener('click', () => {
+            landingSection.style.display = 'none';
+            loginSection.style.display = 'none';
+            registerSection.style.display = 'block';
+        });
+
+        function showBrandPosts() {
+        landingSection.style.display = 'none';
+        loginSection.style.display = 'none';
+        registerSection.style.display = 'none';
+        brandPostsSection.style.display = 'block';
+        createPostContainer.style.display = 'block';
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+               
+                
+                const data = await response.json();
+                alert(data.message); // Display login message
+                showBrandPosts() ;
+                fetchBrandDashboard(); // Fetch and display brand dashboard after successful login
+                fetchBrandPosts(); // Fetch and display brand posts after successful login
+            } catch (err) {
+                console.error('Error logging in:', err);
+                alert('Error logging in');
+            }
+        });
+    
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                alert(data.message); // Display registration message
+                fetchBrandDashboard(); // Fetch and display brand dashboard after successful login
+                fetchBrandPosts(); // Fetch and display brand posts after successful login
+                showBrandPosts() ;
+
+            } catch (err) {
+                console.error('Error registering user:', err);
+                alert('Error registering user');
+            }
+        });
+    
+        // Fetch and display brand dashboard on page load
+        fetchBrandDashboard();
+    
+        // Fetch and display brand posts on page load
+        fetchBrandPosts();
+    
+        postForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            const photo = document.getElementById('post-photo').files[0];
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('photo', photo);
+            try {
+                const response = await fetch('/posts', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                alert(data.message); // Display post creation message
+            } catch (err) {
+                console.error('Error creating post:', err);
+                alert('Error creating post');
+            }
+        });
+    });
+    
+    async function fetchBrandDashboard() {
+    try {
+        const response = await fetch('/brand/dashboard', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        // Display the fetched dashboard elements in brandDashboardSection
+        const brandDashboardSection = document.getElementById('brand-dashboard');
+        brandDashboardSection.innerHTML = ''; // Clear previous content
+        // Example: Append fetched data to brandDashboardSection
+        const dashboardData = data.dashboard; // Assuming the response contains dashboard data
+        const dashboardElement = document.createElement('div');
+        dashboardElement.textContent = JSON.stringify(dashboardData);
+        brandDashboardSection.appendChild(dashboardElement);
+    } catch (err) {
+        console.error('Error fetching brand dashboard:', err);
+    }
+}
+
+async function fetchBrandPosts() {
+    try {
+        const response = await fetch('/brand/posts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        // Display the fetched posts in brandPostsSection
+        const brandPostsSection = document.getElementById('brand-posts');
+        brandPostsSection.innerHTML = ''; // Clear previous content
+        // Example: Append fetched posts to brandPostsSection
+        const posts = data.posts; // Assuming the response contains posts data
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.textContent = JSON.stringify(post);
+            brandPostsSection.appendChild(postElement);
+        });
+    } catch (err) {
+        console.error('Error fetching brand posts:', err);
+    }
+}
+
+
+
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabSphere</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<style>/* Reset CSS */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Global Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        background-color: #f8f8f8;
+        color: #333;
+    }
+    main{
+        background-image: url("56.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+    .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+    }
+    
+    /* Header Styles */
+    header {
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+        display: inline-block;
+    }
+  
+    .logo {
+        font-size: 24px;
+    }
+    
+    nav ul {
+        list-style: none;
+    }
+    
+    nav ul li {
+        display: inline;
+        margin-right: 20px;
+    }
+    
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    nav ul li a:hover {
+        color: #ffc107;
+    }
+    
+    /* Main Content Styles */
+    section {
+        padding: 40px 0;
+    }
+    
+    h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+    
+    p {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    
+    /* Hero Section */
+    .hero {
+        /* background-image:url("56.svg"); */
+        /* background-color: rgb(245, 251, 255); Add your hero background image */
+        background-size:cover;
+        text-align: center;
+        color: #f60f0f;
+        text-shadow: 1px 3px #85e4e4;
+        font-weight: 900;
+        background-repeat: no-repeat;
+    }
+  
+    .hero input{
+    padding: 15px;
+    margin: 10px;
+    height: 40px;
+    font-size: 20px;
+    color: #e60e0e;
+
+    }
+   
+    .hero button:hover{
+        background-color: #ffc107;
+    }
+    .hero h2 {
+        color: #0412d5;
+        font-weight: 900;
+    }
+    
+    /* About Section */
+    .about {
+        background-color: #e5e3e01c;
+         text-align: center;
+        color:rgb(255, 18, 18);
+        font-weight: 900;
+    }
+    .about p {
+        text-align: left;
+        color:rgb(0, 0, 0);
+        font-weight: 450;
+        font-size: 25px;
+        
+    }
+    
+    /* Services Section */
+    .services {
+        background-color: #0c6bd833;
+    }
+    
+    
+    .service {
+        background-color: #8bdef3;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(247, 247, 247, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .service:hover {
+        transform: translateY(-5px);
+    }
+    
+    .service h3 {
+        color: #10aaf1;
+        margin-bottom: 10px;
+    }
+    
+    .service p {
+        color: #000000;
+    }
+
+    
+    /* Brand Offers Section */ 
+     .brand-offers {
+        background-color: #0c6bd833;
+    }
+    .services h2 , .brand-offers  h2{
+        color: rgb(255, 18, 18);
+    }
+    
+    
+    
+    .offer-card h3 {
+        color: #10aaf1;
+        margin-bottom: 10px;
+    }
+    
+    .offer-card p {
+        color: #060606;
+    }
+    
+
+    .offer-card button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .offer-card button:hover {
+        background-color: #ffc107;
+    }
+    
+    /* Authentication Section */
+    .auth {
+        text-align: center;
+    }
+    
+    .auth-form {
+        max-width: 400px;
+        margin: auto;
+    }
+    
+    .auth-form h2 {
+        margin-bottom: 20px;
+    }
+    
+    .auth-form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .auth-form button,.hero button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .auth-form button:hover {
+        background-color: #ffc107;
+    }
+    
+    /* Footer Styles */
+    footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+    
+    footer p {
+        font-size: 14px;
+    }
+    /* Your existing CSS styles */
+
+/* Hide authentication sections initially */
+.auth{
+    display: none;
+}
+/* Updated Styles */
+.offer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:8bdef3;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), -2px -2px 10px rgba(41, 34, 34, 0.897);
+    transition: transform 0.3s ease;
+    color: black;
+    }
+   .offer-card p , ul li {
+    color: black;
+    font-weight: 500;
+    list-style:circle;
+}
+.offer-card:hover {
+    transform: translateY(-5px);
+}
+
+.offer-details {
+    flex: 2;
+}
+
+.offer-actions {
+    flex: 1;
+    text-align: center;
+}
+
+.offer-actions .apply-btn {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.offer-actions .apply-btn:hover {
+    background-color: #ffc107;
+}
+
+
+    </style>
+     <!-- Header Section -->
+     <header>
+        <div class="container">
+            <h1 class="logo">CollabSphere</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#brand-offers">Brand Offers</a></li>
+                    <li id="login-link"><a href="#login">Login</a></li>
+                    <li id="register-link"><a href="#register">Register</a></li>
+                </ul>
+            </nav>
+            
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <!-- Hero Section -->
+     
+        <section id="home" class="hero">
+            <div class="container">
+                <h2>Welcome to CollabSphere!</h2>
+                <p>One platform for all creators. Begin your new journey with us.</p>
+               
+                <!-- Subscribe Form -->
+                <!-- <form id="subscribeForm">
+                    <input type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit">Subscribe</button>
+                </form> -->
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <h2>About Us</h2>
+                <p>Welcome to CollabSphere, your go-to platform for collaboration <br>between creators and brands! At CollabSphere, we believe <br>in the power of synergy, where creators and brands come together <br> to create impactful content and foster meaningful relationships.</p>
+                <p>Our mission is to provide a seamless experience for both creators <br>and brands, offering a wide range of services tailored to meet <br>your needs. Whether you're a content creator looking to connect<br> with brands or a brand seeking to collaborate with influencers, <br>CollabSphere is your ultimate destination.</p>
+                <p>Join us in shaping the future of collaboration and innovation. Let's create, inspire, and make a difference together!</p>
+            </div>  
+        </section>
+
+        <!-- Services Section -->
+      <!-- Services Section -->
+<section id="services" class="services">
+    <div class="container">
+        <h2>Our Services</h2>
+        <div class="service">
+            <h3>Content Creation</h3>
+            <p>Our talented creators specialize in crafting engaging and compelling content tailored to meet your brand's unique needs. From captivating videos to eye-catching graphics, we help bring your brand story to life.</p>
+        </div>
+        <div class="service">
+            <h3>Social Media Management</h3>
+            <p>Leave your social media presence in capable hands with our expert team of social media managers. We strategize, curate, and execute impactful campaigns across various platforms to enhance your brand's online visibility and engagement.</p>
+        </div>
+        <div class="service">
+            <h3>Influencer Marketing</h3>
+            <p>Harness the power of influencer marketing to amplify your brand's reach and impact. Our extensive network of influencers enables us to connect your brand with the right personalities to drive brand awareness, engagement, and conversions.</p>
+        </div>
+    </div>
+</section>
+
+
+   <!-- Brand Offers Section -->
+<section id="brand-offers" class="brand-offers">
+    <div class="container">
+        <h2>Brand Offers</h2>
+        <!-- Brand Offer Cards -->
+        <div class="offer-card">
+            <div class="offer-details">
+                <h3>Shriji Jewellers Sehore</h3>
+                <p>1k Rs/- Offering collabration for local creators!</p>
+                <h3>Requirements</h3>
+                <p>Local creator from sehore and around</p>
+                <p>Making content in local Language</p>
+                <p> Minimum 30k followers</p>
+                <p>Instagram link  </p>
+                <ul>
+                    <li>Two stories , one reel , one post </li>
+                    <li>Sponsored Content</li>
+                    <li>Offer is negotiable</li>
+                </ul>
+                <p>Contact us for more details and to discuss potential collaborations.</p>
+            </div>
+            <div class="offer-actions">
+                <button class="apply-btn">Apply Now</button>
+            </div>
+        </div>
+        <div class="offer-card">
+            <div class="offer-details">
+                <h3>Shyam furniture</h3>
+                <p>Making Homes Beautiful ! Free dellivery all over Mp</p>
+                <h3>Requirements</h3>
+                <p>Content creator from Madhya Pradesh</p>
+                <p>Minimmum 50k followers</p>
+                <p>Now for only male creators</p>
+                <p>Minimum Payout 5k Can be increased as per reach </p>
+                <ul>
+                    <li>Brand Ambassadorship</li>
+                    <li>Physical visit after first Round</li>
+                    <li>Brand Collaborations</li>
+                    <li>For all social Media platform</li>
+                    <li>Three Videos explaining about services and our work  </li>
+                    
+                    
+                </ul>
+                <p>Let's collaborate and make a difference together!</p>
+            </div>
+            <div class="offer-actions">
+                <button class="apply-btn">Apply Now</button>
+            </div>
+        </div>
+        <!-- Add more brand offers with relevant details -->
+    </div>
+</section>
+
+
+        <!-- Authentication Section -->
+        <section id="auth" class="auth">
+            <div class="container">
+                <!-- Brand Authentication -->
+                <div id="brand-auth" class="auth-form">
+                    <h2>Brand Portal</h2>
+                    <form id="brand-login-form">
+                        <h3>Login as Brand</h3>
+                        <input type="email" placeholder="Email" required>
+                        <input type="password" placeholder="Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                    <p>Don't have an account? <a href="#brand-register-form">Register</a></p>
+                </div>
+                <!-- Creator Authentication -->
+                <div id="creator-auth" class="auth-form">
+                    <h2>Creator Portal</h2>
+                    <form id="creator-login-form">
+                        <h3>Login as Creator</h3>
+                        <input type="email" placeholder="Email" required>
+                        <input type="password" placeholder="Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                    <p>Don't have an account? <a href="#register-form">Register</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Registration Section -->
+        <section id="brand-register" class="auth">
+            <div class="container">
+                <div id="brand-register-form" class="auth-form">
+                    <h2>Brand Registration</h2>
+                    <form>
+                        <input type="text" placeholder="Company Name" required>
+                        <input type="email" placeholder="Email" required>
+                        <input type="password" placeholder="Password" required>
+                        <button type="submit">Register</button>
+                    </form>
+                    <p>Already have an account? <a href="#brand-auth">Login</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creator Registration Section -->
+        <section id="register" class="auth">
+            <div class="container">
+                <div id="register-form" class="auth-form">
+                    <h2>Creator Registration</h2>
+                    <form>
+                        <input type="text" placeholder="Full Name" required>
+                        <input type="email" placeholder="Email" required>
+                        <input type="password" placeholder="Password" required>
+                        <button type="submit">Register</button>
+                    </form>
+                    <p>Already have an account? <a href="#creator-auth">Login</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 CollabSphere. All rights reserved.</p>
+        </div>
+    </footer>
+
+<script>document.addEventListener('DOMContentLoaded', () => {
+    const loginBtn = document.querySelector('nav ul li:nth-child(5) a');
+    const registerBtn = document.querySelector('nav ul li:nth-child(6) a');
+    const loginSection = document.getElementById('auth');
+    const brandLoginSection = document.getElementById('brand-login-form');
+    const creatorLoginSection = document.getElementById('creator-login-form');
+    const registerSection = document.getElementById('register');
+    const brandDashboardSection = document.getElementById('brand-dashboard');
+    const brandPostsSection = document.getElementById('brand-posts');
+    const createPostContainer = document.getElementById('post-creation');
+    const loginLink = document.getElementById('login-link');
+    const registerLink = document.getElementById('register-link');
+    const logoutBtn = document.getElementById('logout-btn');
+    const applyButtons = document.querySelectorAll('.apply-btn');
+           
+    applyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Show a popup message
+                    alert('Applied for collaboration successfully! The brand will contact you if interested.');
+                    button.innerHTML="applied";
+                    button.disabled=true;
+                    button.style.backgroundColor='green';
+                });
+            });   
+
+    loginLink.addEventListener('click', () => {
+
+        loginSection.style.display = 'block';
+        registerSection.style.display = 'none';
+    });
+
+    registerLink.addEventListener('click', () => {
+        registerSection.style.display = 'block';
+        loginSection.style.display = 'none';
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/logout', {
+                method: 'POST'
+            });
+            const data = await response.json();
+            if (data.message === 'Logged out successfully') {
+                // Redirect to homepage or perform any other action
+                window.location.href = '/';
+            } else {
+                alert('Error logging out');
+            }
+        } catch (err) {
+            console.error('Error logging out:', err);
+            alert('Error logging out');
+        }
+    });
+
+    loginSection.style.display = 'none';
+    brandLoginSection.style.display = 'none';
+    creatorLoginSection.style.display = 'none';
+    registerSection.style.display = 'none';
+    brandPostsSection.style.display = 'none';
+    createPostContainer.style.display = 'none';
+
+    // Event listener for clicking on login button
+    loginBtn.addEventListener('click', () => {
+        loginSection.style.display = 'block';
+    });
+
+    // Event listener for clicking on register button
+    registerBtn.addEventListener('click', () => {
+        registerSection.style.display = 'block';
+    });
+
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
+            alert(data.message); // Display login message
+            if (data.success) {
+                // Redirect to appropriate dashboard based on user type
+                if (data.userType === 'brand') {
+                    showBrandDashboard();
+                    fetchBrandPosts();
+                } else if (data.userType === 'creator') {
+                    // Redirect to creator dashboard or perform any other action
+                    alert('Redirect to creator dashboard');
+                }
+            }
+        } catch (err) {
+            console.error('Error logging in:', err);
+            alert('Error logging in');
+        }
+    });
+
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const username = document.getElementById('register-username').value; // Add username field
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password, username }) // Include username in the request payload
+            });
+            const data = await response.json();
+            alert(data.message); // Display registration message
+            if (data.success) {
+                // Redirect to appropriate dashboard based on user type
+                if (data.userType === 'brand') {
+                    showBrandDashboard();
+                } else if (data.userType === 'creator') {
+                    // Redirect to creator dashboard or perform any other action
+                    alert('Redirect to creator dashboard');
+                }
+            }
+        } catch (err) {
+            console.error('Error registering user:', err);
+            alert('Error registering user');
+        }
+    });
+
+    async function fetchBrandDashboard() {
+        try {
+            const response = await fetch('/brand/dashboard', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            // Display the fetched dashboard elements in brandDashboardSection
+            brandDashboardSection.innerHTML = ''; // Clear previous content
+            // Example: Append fetched data to brandDashboardSection
+            const dashboardData = data.dashboard; // Assuming the response contains dashboard data
+            const dashboardElement = document.createElement('div');
+            dashboardElement.textContent = JSON.stringify(dashboardData);
+            brandDashboardSection.appendChild(dashboardElement);
+        } catch (err) {
+            console.error('Error fetching brand dashboard:', err);
+        }
+    }
+
+    async function fetchBrandPosts() {
+        try {
+            const response = await fetch('/brand/posts', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            // Display the fetched posts in brandPostsSection
+            brandPostsSection.innerHTML = ''; // Clear previous content
+            // Example: Append fetched posts to brandPostsSection
+            const posts = data.posts; // Assuming the response contains posts data
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.textContent = JSON.stringify(post);
+                brandPostsSection.appendChild(postElement);
+            });
+        } catch (err) {
+            console.error('Error fetching brand posts:', err);
+        }
+    }
+
+    function showBrandDashboard() {
+        loginSection.style.display = 'none';
+        registerSection.style.display = 'none';
+        brandLoginSection.style.display = 'none';
+        creatorLoginSection.style.display = 'none';
+        brandDashboardSection.style.display = 'block';
+        createPostContainer.style.display = 'block';
+    }
+});
+</script>
+</body>
+</html>
